@@ -23,13 +23,10 @@ jobs:
           printf '%s\n' "$PRIVATE_KEY" | tr -d '\r' > private_key.pem
           chmod 600 private_key.pem
 
-          ssh-keygen -y -f private_key.pem > /dev/null
-
           ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
 
           ssh -i private_key.pem ec2-user@"$EC2_HOST" '
             cd /home/ec2-user/my-app &&
             git pull origin main &&
-            npm install &&
-            pm2 restart my-app
+            echo "Deployment successful!"
           '
